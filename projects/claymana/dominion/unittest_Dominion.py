@@ -80,7 +80,6 @@ class TestAction_card(TestCase):
         self.card.use(self.player, self.trash)
         self.assertEqual(self.player.played[-1], self.card)
         self.assertEqual(self.player.hand, prior_hand)
-        pass
 
     def test_augment(self):
         self.test_init()
@@ -89,8 +88,6 @@ class TestAction_card(TestCase):
         self.assertEqual(self.player.buys, 3)
         self.assertEqual(self.player.purse, 2)
         self.assertEqual(len(self.player.hand), 7)
-        pass
-
 
 class TestPlayer(TestCase):
     def setUp(self):
@@ -131,25 +128,19 @@ class TestPlayer(TestCase):
         len_prior_hand = len(self.player.hand)
         self.player.draw()
         self.assertEqual(len(self.player.hand), len_prior_hand + 1)
-        pass
 
     def test_action_balance(self):
         self.test_init()
         self.player.hand.append(self.card)
-        player_action_balance = self.player.action_balance()
-        self.assertEqual(player_action_balance, 70*1/11)
+        self.assertEqual(self.player.action_balance(), 70*1/11)
         self.player.hand.append(self.card)
-        player_action_balance = self.player.action_balance()
-        self.assertEqual(player_action_balance, 70*2/12)
-        pass
+        self.assertEqual(self.player.action_balance(), 70*2/12)
 
     def test_cardsummary(self):
         self.test_init()
-        summary = self.player.cardsummary()
-        self.assertEqual(summary, {'Copper': 7, 'Estate': 3, 'VICTORY POINTS': 3})
+        self.assertEqual(self.player.cardsummary(), {'Copper': 7, 'Estate': 3, 'VICTORY POINTS': 3})
         self.player.hand.append(self.card)
-        summary = self.player.cardsummary()
-        self.assertEqual(summary, {'Copper': 7, 'Estate': 3, 'Annie': 1, 'VICTORY POINTS': 3})
+        self.assertEqual(self.player.cardsummary(), {'Copper': 7, 'Estate': 3, 'Annie': 1, 'VICTORY POINTS': 3})
 
 
     def test_calcpoints(self):
@@ -168,4 +159,3 @@ class TestPlayer(TestCase):
         self.player.hand.append(garden)
         self.player.hand.append(garden)
         self.assertEqual(self.player.calcpoints(), 3 + 20)
-        pass
