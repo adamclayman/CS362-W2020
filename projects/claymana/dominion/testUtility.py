@@ -2,6 +2,31 @@ import Dominion
 import random
 from collections import defaultdict
 
+def GetPlayers():
+    player_names = ["Annie", "*Ben", "*Carla"]
+    players = []
+    for name in player_names:
+        if name[0] == "*":
+            players.append(Dominion.ComputerPlayer(name[1:]))
+        elif name[0] == "^":
+            players.append(Dominion.TablePlayer(name[1:]))
+        else:
+            players.append(Dominion.Player(name))
+    return players
+
+def GetVictoryCards(players):
+    player_count = len(players)
+    if player_count > 2:
+        nV = 12
+    else:
+        nV = 8
+    return nV
+
+def GetCurses(players):
+    player_count = len(players)
+    nC = -10 + 10 * player_count
+    return nC
+
 def GetBoxes(nV):
     box = {}
     box["Woodcutter"]=[Dominion.Woodcutter()]*10
@@ -31,7 +56,7 @@ def GetBoxes(nV):
     box["Throne Room"]=[Dominion.Throne_Room()]*10
     return box
 
-def SupplyOrder():
+def GetSupplyOrder():
     supply_order = {0:['Curse','Copper'],2:['Estate','Cellar','Chapel','Moat'],
                 3:['Silver','Chancellor','Village','Woodcutter','Workshop'],
                 4:['Gardens','Bureaucrat','Feast','Militia','Moneylender','Remodel','Smithy','Spy','Thief','Throne Room'],
@@ -39,12 +64,15 @@ def SupplyOrder():
                 6:['Gold','Adventurer'],8:['Province']}
     return supply_order
 
-def PickSupply(box, nV, nC, player_count):
+def GetSupply(box, card_count, players, nV, nC):
+    # Calculate player_count
+    player_count = len(players)
+
     # Pick 10 cards from box to be in the supply
     boxlist = [k for k in box]
     random.shuffle(boxlist)
-    random10 = boxlist[:10]
-    supply = defaultdict(list,[(k,box[k]) for k in random10])
+    randomN = boxlist[:card_count]
+    supply = defaultdict(list,[(k,box[k]) for k in randomN])
 
     # The supply always has these cards
     supply["Copper"]=[Dominion.Copper()]*(60-player_count*7)
